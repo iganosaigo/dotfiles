@@ -1,0 +1,165 @@
+{
+  // Some UI optimizations
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "Atom One Dark",
+
+  "breadcrumbs.enabled": true,
+  "vsicons.dontShowNewVersionMessage": true,
+
+  "bookmarks.sideBar.expanded": true,
+
+  // Editor setup
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.minimap.enabled": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  // ??
+  "editor.snippetSuggestions": "bottom",
+  // "editor.tabSize": 4,
+  //   "editor.fontFamily": "Inconsolata",
+  "terminal.integrated.fontFamily": "monospace",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 0,
+  "editor.wordWrap": "on",
+  "editor.renderWhitespace": "selection",
+  "editor.cursorStyle": "line",
+  "editor.cursorBlinking": "phase",
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.parameterHints.enabled": true,
+
+  "diffEditor.ignoreTrimWhitespace": false,
+
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 10000,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": {
+    "**/.mypy_cache": true,
+    "**/.venv": true,
+    "**/node_modules": true
+  },
+
+  "code-runner.enableAppInsights": false,
+
+  //   "[shellscript]": {
+  //     "editor.defaultFormatter": "foxundermoon.shell-format"
+  //   },
+
+  // Python Settings
+  "[python]": {
+    // "editor.tabSize": 2,
+    "editor.rulers": [
+      {
+        "column": 80, // Attention barier
+        "color": "#7ae5d931"
+      },
+      {
+        "column": 88, // Match what black and flake does.
+        "color": "#eb9a9a31"
+      }
+    ],
+    "editor.formatOnType": true
+  },
+  "python.languageServer": "Pylance",
+  "python.analysis.autoImportCompletions": false,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length=88"],
+  // "python.formatting.autopep8Path": "autopep8",
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    // Match what black does.
+    "--max-line-length=88"
+  ],
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.logLevel": "Trace",
+  "python.analysis.diagnosticMode": "workspace",
+
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+
+  "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+
+  "typescript.suggest.autoImports": false,
+  "javascript.suggest.autoImports": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[javascriptreact]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.rulers": [
+      {
+        "column": 80,
+        "color": "#7ae5d931"
+      },
+      {
+        "column": 88, // Match what black and flake does.
+        "color": "#eb9a9a31"
+      }
+    ]
+  },
+  "[typescript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.rulers": [
+      {
+        "column": 80,
+        "color": "#7ae5d931"
+      },
+      {
+        "column": 88, // Match what black and flake does.
+        "color": "#eb9a9a31"
+      }
+    ]
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+    // "typescript": "typescriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true,
+
+  // Prettier Settings
+  "prettier.enable": true,
+  "prettier.tabWidth": 2,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "prettier.semi": true,
+  "prettier.jsxBracketSameLine": false,
+  "prettier.printWidth": 88,
+
+  // ESLint settings
+  "eslint.validate": ["javascript", "typescript"],
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "npm",
+  "eslint.format.enable": true,
+  "window.zoomLevel": 1
+}
