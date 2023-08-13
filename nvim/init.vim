@@ -51,13 +51,23 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'airblade/vim-gitgutter'
 Plug 'Yggdroot/indentLine'
 Plug 'hashivim/vim-terraform'
+Plug 'folke/trouble.nvim'
+Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'nvim-tree/nvim-web-devicons'
+
 call plug#end()
 
+let g:black_value = 80
+nnoremap <F2> :execute "!black -l " . g:black_value . " %"<CR><CR>
+
+let mapleader = ";"
+
 lua << EOF
-enable_pylsp = true
+enable_pylsp = false
 enable_pyright = true
 enable_terraform = true
 enable_ansible = true
+enable_bash = true
 
 vim.o.completeopt = 'menuone,noselect'
 
@@ -77,14 +87,14 @@ require('telescope').load_extension('fzf')
 require('telescope').setup {
     defaults = {
         ignore_case = true,
-        smart_case = true
+        smart_case = true,
     }
 }
+require('lsp-errors-format')
+
 EOF
 
-
 colorscheme sonokai
-let mapleader = ";"
 
 nnoremap H gT
 nnoremap L gt
@@ -97,6 +107,9 @@ endif
 
 nnoremap ,<space> :nohlsearch<CR>
 nnoremap .<space> :TransparentToggle<CR>
+
+nnoremap <silent> gv :vsplit<CR><C-]>
+nnoremap <silent> gs :split<CR><C-]>
 
 " Default transparent mode "
 let g:transparent_enabled = v:false
@@ -116,6 +129,8 @@ autocmd BufWritePre *.tf lua vim.lsp.buf.format()
 ""let g:terraform_fmt_on_save = 0
 nnoremap <leader>' viw<esc>a"<esc>bi"<esc>lell
 
+au BufRead,BufNewFile *\v*/molecule/*.(yml|yaml)$ set filetype=yaml.ansible
+let g:ansible_unindent_after_newline = 1
 
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
@@ -132,15 +147,6 @@ let g:netrw_browse_split = 3
 
 autocmd FileType python set colorcolumn=80
 set splitright
-
-
-
-
-
-
-
-
-
 
 
 

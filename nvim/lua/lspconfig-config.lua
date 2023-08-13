@@ -40,13 +40,82 @@ local common_lsp_params = {
     lsp_flags = lsp_flags,
 }
 
+
+if enable_bash then
+    local custom_params = vim.tbl_extend('force', common_lsp_params, {
+        cmd = { "bash-language-server", "start" },
+        filetypes = { "sh" },
+        root_dir = lspconfig.util.find_git_ancestor,
+        single_file_support = true,
+        settings = {
+            bashIde = {
+                globPattern = "*@(.sh|.inc|.bash|.command)"
+            }
+        }
+    })
+    lspconfig.bashls.setup(custom_params)
+    -- lspconfig.bashls.setup(common_lsp_params)
+end
+
+if enable_pyright then
+    local custom_params = vim.tbl_extend('force', common_lsp_params, {
+        settings = {
+            -- https://microsoft.github.io/pyright/#/settings
+            pyright = {
+                disableLanguageServices = false,
+                disableOrganizeImports = false
+            },
+            python = {
+                analysis = {
+                    autoImportCompletions = true,
+                    typeCheckingMode = 'basic',
+                    useLibraryCodeForTypes = true
+                }
+            }
+        }
+    })
+    lspconfig.pyright.setup(custom_params)
+end
+
 if enable_pylsp then
-    lspconfig.pylsp.setup(common_lsp_params)
+    local custom_params = vim.tbl_extend('force', common_lsp_params, {
+        settings = {
+            pylsp = {
+                plugins = {
+                    jedi_completion = {
+                        enabled = false,
+                        include_params = true,
+                        include_class_objects = true,
+                        include_function_objects = true,
+                        fuzzy = true,
+                        eager = true
+                    },
+                    jedi_hover = {
+                        enabled = false,
+                    },
+                    jedi_signature = {
+                        enabled = false,
+                    },
+                    -- TODO: Make this pile working
+                    -- black = {
+                    --     enabled = true,
+                    --     line_length = 80,
+                    -- },
+                    pycodestyle = {
+                        enabled = true,
+                        maxLineLength = 80,
+                        -- hangClosing = false,
+                    },
+                    rope_autoimport = {
+                        enabled = false,
+                    },
+                }
+            }
+        }
+    })
+    lspconfig.pylsp.setup(custom_params)
 end
   
-if enable_pyright then
-    lspconfig.pyright.setup(common_lsp_params)
-end
 
 if enable_terraform then
     lspconfig.terraformls.setup(common_lsp_params)
