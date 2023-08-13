@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/locker/.oh-my-zsh"
+export ZSH="/home/${USER}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -75,7 +75,9 @@ plugins=(
     docker-compose
     poetry
     kubectl
+    kube-ps1
     helm
+    vagrant
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -116,11 +118,47 @@ complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C ${HOME}/bin/packer.io packer
 complete -C '/usr/local/bin/aws_completer' aws
 
+export PATH="$HOME/.krew/bin:$PATH"
+
 alias vim="nvim"
 alias c="clear"
 alias myip="curl ifconfig.co"
 
 alias k="kubectl"
-alias kctx="kubectx"
+alias kct="kubectx"
 alias kns="kubens"
+alias p="pulumi"
+alias t="terraform"
 
+function kenv() {
+    for config in $HOME/.kube/*_config ; do
+        export KUBECONFIG="$KUBECONFIG:$config"
+    done
+}
+
+function kenable() {
+    KUBE_PS1_PREFIX=''
+    KUBE_PS1_SYMBOL_ENABLE=true
+    KUBE_PS1_SEPARATOR=''
+    KUBE_PS1_SUFFIX=' '
+    KUBE_PS1_NS_COLOR=green
+    KUBE_PS1_DIVIDER=' ➜ '
+    KUBE_PS1_CTX_COLOR=magenta
+    kubeon
+    #PROMPT='$(kube_ps1)%1~ '
+    PROMPT='$(kube_ps1)@ %{$fg[cyan]%}%1~%{$reset_color%} '
+}
+
+function kdisable() {
+    kubeoff
+    source $HOME/.oh-my-zsh/themes/iganosaigo.zsh-theme
+}
+
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/completions/
+autoload -U compinit && compinit
+
+export PATH=$PATH:$HOME/.pulumi/bin
+source <(pulumi gen-completion zsh)
+
+export XDG_RUNTIME_DIR="/run/user/$UID"
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
