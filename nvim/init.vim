@@ -46,7 +46,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'pearofducks/ansible-vim' , { 'do': './UltiSnips/generate.sh' }
 Plug 'tpope/vim-commentary'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.2' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'airblade/vim-gitgutter'
 Plug 'Yggdroot/indentLine'
@@ -73,23 +73,9 @@ vim.o.completeopt = 'menuone,noselect'
 
 local async = require "plenary.async" 
 require('nvim-cmp-config')
--- require('lspservers-config')
 require('lspconfig-config')
 require('telescope-config')
 require("nvim-autopairs").setup {}
-
-require'lspconfig'.terraformls.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-require'lspconfig'.tflint.setup{}
-require('telescope').load_extension('fzf')
-require('telescope').setup {
-    defaults = {
-        ignore_case = true,
-        smart_case = true,
-    }
-}
 require('lsp-errors-format')
 
 EOF
@@ -114,13 +100,6 @@ nnoremap <silent> gs :split<CR><C-]>
 " Default transparent mode "
 let g:transparent_enabled = v:false
 
-" Telescope Mappings "
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fc <cmd>Telescope colorscheme<cr>
-nnoremap <leader>f/ <cmd>Telescope current_buffer_fuzzy_find<cr>
 
 " Terraform "
 autocmd BufWritePre *.tfvars lua vim.lsp.buf.format()
