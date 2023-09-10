@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/${USER}/.oh-my-zsh"
+export ZSH="/home/grigorevan/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -78,6 +78,7 @@ plugins=(
     kube-ps1
     helm
     vagrant
+    minikube
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -101,14 +102,15 @@ eval "$(pyenv init -)"
 
 export PATH="$HOME/.poetry/bin:$PATH"
 
-# >>>> Vagrant command completion (start)
-fpath=(/opt/vagrant/embedded/gems/2.3.2/gems/vagrant-2.3.2/contrib/zsh $fpath)
-compinit
-# <<<<  Vagrant command completion (end)
 
 if [[ $TILIX_ID ]]; then
     source /etc/profile.d/vte.sh
 fi
+
+# >>>> Vagrant command completion (start)
+fpath=(/usr/share/rubygems-integration/all/gems/vagrant-2.2.19/contrib/zsh $fpath)
+compinit
+# <<<<  Vagrant command completion (end)
 
 export PATH="$HOME/yandex-cloud/bin:$PATH"
 if [ -f "${HOME}/yandex-cloud/completion.zsh.inc" ]; then source "${HOME}/yandex-cloud/completion.zsh.inc"; fi
@@ -125,6 +127,8 @@ alias c="clear"
 alias myip="curl ifconfig.co"
 
 alias k="kubectl"
+alias m="minikube"
+alias mk="minikube kubectl --"
 alias kct="kubectx"
 alias kns="kubens"
 alias p="pulumi"
@@ -137,7 +141,7 @@ function kenv() {
 }
 
 function kenable() {
-    KUBE_PS1_PREFIX=''
+    KUBE_PS1_PREFIX='' 
     KUBE_PS1_SYMBOL_ENABLE=true
     KUBE_PS1_SEPARATOR=''
     KUBE_PS1_SUFFIX=' '
