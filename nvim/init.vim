@@ -55,6 +55,8 @@ Plug 'folke/trouble.nvim'
 Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'nvim-tree/nvim-web-devicons'
 
+Plug 'jghauser/fold-cycle.nvim'
+
 call plug#end()
 
 let g:black_value = 80
@@ -77,7 +79,7 @@ require('lspconfig-config')
 require('telescope-config')
 require("nvim-autopairs").setup {}
 require('lsp-errors-format')
-
+require('folding')
 EOF
 
 colorscheme sonokai
@@ -100,6 +102,7 @@ nnoremap <silent> gs :split<CR><C-]>
 " Default transparent mode "
 let g:transparent_enabled = v:false
 
+set foldenable
 
 " Terraform "
 autocmd BufWritePre *.tfvars lua vim.lsp.buf.format()
@@ -125,6 +128,7 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 3
 
 autocmd FileType python set colorcolumn=80
+autocmd FileType python set foldmethod=indent
 set splitright
 
 
