@@ -1,12 +1,20 @@
 import os
-import helpers as h
 import shlex
-
 from dataclasses import dataclass
+
+import helpers as h
+
 from ranger.api.commands import Command
 from ranger.ext.get_executables import get_executables
 
 h.check_required_bin()
+
+
+@dataclass
+class RgCmd:
+    action: list
+    stdout: str | None = None
+    params: dict | None = None
 
 
 class rg(Command):
@@ -21,20 +29,15 @@ class rg(Command):
 
         fm = self.fm
 
-        @dataclass
-        class Cmd:
-            action: list
-            stdout: str | None = None
-            params: dict | None = None
+        # @dataclass
+        # class Cmd:
+        #     action: list
+        #     stdout: str | None = None
+        #     params: dict | None = None
 
         reqs = h.REQUIRED_BIN
 
-        editor = None
-        if "nvim" in get_executables():
-            editor = "nvim"
-        elif "vim" in get_executables():
-            editor = "vim"
-
+        editor = self.get_editor()
         if editor is None:
             self.fm.notify("(Neo)vim not found", bad=True)
             return
@@ -48,37 +51,12 @@ class rg(Command):
             )
             return
 
-        ripgrep = Cmd(
-            action=[reqs["ripgrep"], "--line-number"],
-        )
         search_pattern = shlex.split(self.rest(1))
-        ripgrep.action.extend(search_pattern)
+        ripgrep = self.build_ripgrep_cmd(reqs["ripgrep"], search_pattern)
+        preview = self.build_preview_cmd(reqs["preview"])
+        fzf = self.build_fzf_cmd(reqs["fzf"], preview.action)
+        awk = self.build_awk_cmd(reqs["awk"])
 
-        preview = Cmd(
-            action=[
-                reqs["preview"],
-                "--theme=gruvbox-dark",
-                "--color=always",
-                "--number",
-                "--style=numbers,changes,rule",
-                "--highlight-line={2}",
-                "{1}",
-            ]
-        )
-
-        fzf = Cmd(
-            action=[
-                reqs["fzf"],
-                "--exact",
-                "--delimiter=:",
-                "--preview-window=up,70%,wrap,+{2}+3/2",
-                f"--preview={' '.join(preview.action)}",
-            ]
-        )
-
-        awk = Cmd(action=[reqs["awk"], "-F:", '{print "+"$2" "$1}'])
-
-        ripgrep.params = {"stdin": None}
         ripgrep.stdout = h.wrap_cmd(ripgrep.action, fm, **ripgrep.params)
 
         if not len(ripgrep.stdout):
@@ -96,15 +74,71 @@ class rg(Command):
         full_path = stdout_awk.split()[1].strip()
 
         file_fullpath = os.path.abspath(full_path)
-        file_basename = os.path.basename(full_path)
 
-        # I want to cd within files dir when editor launched.
+        self.open_file(editor, selected_line, file_fullpath, current_pwd)
+
+    def get_editor(self):
+        if "nvim" in get_executables():
+            return "nvim"
+        elif "vim" in get_executables():
+            return "vim"
+        return None
+
+    def build_ripgrep_cmd(self, ripgrep_bin, search_pattern):
+        return RgCmd(
+            action=[ripgrep_bin, "--line-number"] + search_pattern,
+            params={"stdin": None},
+        )
+
+    def build_preview_cmd(self, preview_bin):
+        return RgCmd(
+            action=[
+                preview_bin,
+                "--theme=gruvbox-dark",
+                "--color=always",
+                "--number",
+                "--style=numbers,changes,rule",
+                "--highlight-line={2}",
+                "{1}",
+            ]
+        )
+
+    def build_fzf_cmd(self, fzf_bin, preview_action):
+        return RgCmd(
+            action=[
+                fzf_bin,
+                "--exact",
+                "--delimiter=:",
+                "--preview-window=up,70%,wrap,+{2}+3/2",
+                f"--preview={' '.join(preview_action)}",
+            ]
+        )
+
+    def build_awk_cmd(self, awk_bin):
+        return RgCmd(action=[awk_bin, "-F:", '{print "+"$2" "$1}'])
+
+    def open_file(self, editor, selected_line, file_fullpath, current_pwd):
+        fm = self.fm
+
+        # Run Editor without changing the directory
+        try:
+            fm.execute_command(
+                f"{editor} {selected_line} {file_fullpath} -c 'normal zz'"
+            )
+        finally:
+            fm.cd(current_pwd)
+
+
+class rgd(rg):
+    def open_file(self, editor, selected_line, file_fullpath, current_pwd):
+        fm = self.fm
+        file_basename = os.path.basename(file_fullpath)
+
         if os.path.isdir(file_fullpath):
             fm.cd(file_fullpath)
         else:
             fm.select_file(file_fullpath)
 
-        # Run Editor and when it exits return to previus PWD
         try:
             fm.execute_command(
                 f"{editor} {selected_line} {file_basename} -c 'normal zz'"
