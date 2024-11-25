@@ -1,0 +1,14 @@
+---
+aliases:
+  p: v1/pods
+  ps: pod kube-system
+  crd: customresourcedefinitions
+  cro: cronjobs
+  jo: jobs
+  dp: deployments
+  sec: v1/secrets
+  cr: clusterroles
+  crb: clusterrolebindings
+  ro: roles
+  rb: rolebindings
+  np: networkpolicies

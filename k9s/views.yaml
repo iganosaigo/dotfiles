@@ -1,0 +1,95 @@
+views:
+  v1/pods:
+    columns:
+      - NAMESPACE
+      - NAME
+      - READY
+      - STATUS
+      - RESTARTS
+      - CPU
+      - MEM
+      - "CPU/R:L"
+      - "MEM/R:L"
+      - IP
+      - NODE
+      - AGE
+      - QOS
+      - PF
+      # - "%CPU/R"
+      # - "%MEM/R"
+      # - "%CPU/L"
+      # - "%MEM/L"
+  apps/v1/deployments:
+    columns:
+      - NAMESPACE
+      - NAME
+      - READY
+      - AVAILABLE
+      - UP-TO-DATE
+      - AGE
+  apps/v1/daemonsets:
+    columns:
+      - NAMESPACE
+      - NAME
+      - DESIRED
+      - CURRENT
+      - READY
+      - UP-TO-DATE
+      - AVAILABLE
+      - AGE
+  v1/services:
+    columns:
+      - NAMESPACE
+      - NAME
+      - TYPE
+      - CLUSTER-IP
+      - EXTERNAL-IP
+      - AGE
+      - PORTS
+  v1/nodes:
+    columns:
+      - NAME
+      - STATUS
+      - ROLE
+      - TAINTS
+      - INTERNAL-IP
+      - EXTERNAL-IP
+      - PODS
+      - CPU
+      - MEM
+      - "%CPU"
+      - "%MEM"
+      - "CPU/A"
+      - "MEM/A"
+      - VERSION
+      - KERNEL
+      - AGE
+  apps/v1/statefulsets:
+    columns:
+      - NAMESPACE
+      - NAME
+      - READY
+      - AGE
+      - SERVICE
+      - IMAGES
+  v1/persistentvolumes:
+    columns:
+      - STORAGECLASS
+      - NAME
+      - CAPACITY
+      - STATUS
+      - "ACCESS MODES"
+      - "RECLAIM POLICY"
+      - REASON
+      - VOLUMEMODE
+      - AGE
+  v1/persistentvolumeclaims:
+    columns:
+      - NAMESPACE
+      - STORAGECLASS
+      - NAME
+      - STATUS
+      - VOLUME
+      - CAPACITY
+      - "ACCESS MODES"
+      - AGE
