@@ -125,7 +125,7 @@ export PATH="$HOME/.krew/bin:$PATH"
 
 alias vim="vim"
 alias c="clear"
-alias myip="curl ifconfig.co"
+alias myipe="curl http://checkip.amazonaws.com"
 
 alias k="kubectl"
 alias m="minikube"
@@ -198,6 +198,12 @@ export NIX_USER_CONF_FILES=$HOME/nix/nix.conf
 autoload -U +X compinit && compinit -i
 autoload -U +X bashcompinit && bashcompinit -i
 
+function myip {
+    command curl -s http://ip-api.com/json | \
+        jq 'with_entries(if .key == "query" then .key = "ip" else . end)' | \
+        jq '{status, country, city, isp, org, ip}'
+}
+
 function run_ranger {
     local IFS=$'\t\n'
     local tempfile="$(mktemp -t tmp.XXXXXX)"
@@ -215,3 +221,5 @@ function run_ranger {
 }
 
 complete -o nospace -C /usr/bin/terramate terramate
+
+if command -v tailscale 1>/dev/null ; then source <(tailscale completion zsh); fi
